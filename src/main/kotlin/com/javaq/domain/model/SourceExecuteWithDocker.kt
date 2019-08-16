@@ -8,13 +8,12 @@ class SourceExecuteWithDocker(override val programLanguage: ProgramLanguage,
 ) : SourceExecutor {
     private lateinit var containerId: String
 
-    override fun execute(): ExecuteResult {
+    override fun execute(): ExecuteResult  {
         createDocker()
         mkdir()
         writeSourceToFile()
         copyFileToDocker()
         val executeResult = start()
-        copyTimeFromDocker()
         removeDocker()
         return executeResult
     }
@@ -42,7 +41,7 @@ class SourceExecuteWithDocker(override val programLanguage: ProgramLanguage,
         ).runCommand()
 
         listOf(
-                "mkdir", "-p", "/tmp/workspace"
+               "mkdir", "-p", "/tmp/workspace"
         ).runCommand()
 
         listOf(
