@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class RunApiController {
+    @CrossOrigin
     @PostMapping("/api/run")
     fun run(@RequestBody request: String): ExecuteResult {
         val objectMapper = jacksonObjectMapper()
