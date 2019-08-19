@@ -1,4 +1,6 @@
-package com.javaq.domain.model
+package com.javaq.domain.model.programLanguage
+
+import com.javaq.domain.model.programLanguage.ProgramLanguage
 
 data class Java(
         override val fileName: String = "Main.java",

@@ -1,5 +1,6 @@
 package com.javaq.domain.model
 
+import com.javaq.domain.model.programLanguage.ProgramLanguage
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
@@ -15,9 +16,9 @@ interface SourceExecutor {
             process.waitFor(timeoutSeconds, TimeUnit.SECONDS)
             val stdOut = process.inputStream.bufferedReader().readText()
             val stdErr = process.errorStream.bufferedReader().readText()
-            ExecuteResult(StdOut(stdOut), StdErr(stdErr))
+            ExecuteResult(stdOut, stdErr)
         } catch (e: Exception) {
-            ExecuteResult(StdOut(""), StdErr(""))
+            ExecuteResult("", "")
         }
     }
 }

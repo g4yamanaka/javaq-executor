@@ -1,5 +1,9 @@
-package com.javaq.domain.model
+package com.javaq.infrastracture
 
+import com.javaq.domain.model.ExecuteResult
+import com.javaq.domain.model.programLanguage.ProgramLanguage
+import com.javaq.domain.model.Source
+import com.javaq.domain.model.SourceExecutor
 import java.io.File
 import java.io.IOException
 
@@ -8,7 +12,7 @@ class SourceExecuteWithDocker(override val programLanguage: ProgramLanguage,
 ) : SourceExecutor {
     private lateinit var containerId: String
 
-    override fun execute(): ExecuteResult  {
+    override fun execute(): ExecuteResult {
         createDocker()
         mkdir()
         writeSourceToFile()
@@ -27,12 +31,13 @@ class SourceExecuteWithDocker(override val programLanguage: ProgramLanguage,
                 "--memory-swap", "512m",
                 "--ulimit", "fsize=1000000",
                 "-w", "/workspace",
+                "--user", "nobody",
                 "ubuntu-dev",
                 "/usr/bin/time", "-q", "-f", "\"%e\"", "-o", "/time.txt",
                 "timeout", "3",
                 "/bin/bash", "-c", programLanguage.executeCommand
         ).runCommand()
-        containerId = fullContainerId.value.substring(0, 12)
+        containerId = fullContainerId.substring(0, 12)
     }
 
     private fun mkdir() {

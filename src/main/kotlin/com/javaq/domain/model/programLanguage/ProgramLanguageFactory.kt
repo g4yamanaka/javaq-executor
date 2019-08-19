@@ -1,4 +1,4 @@
-package com.javaq.domain.model
+package com.javaq.domain.model.programLanguage
 
 object ProgramLanguageFactory {
     fun create(name: String): ProgramLanguage {
