@@ -1,7 +1,5 @@
 package com.javaq.interface_
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.javaq.domain.model.*
 import com.javaq.domain.model.programLanguage.ProgramLanguageFactory
 import com.javaq.infrastracture.SourceExecuteWithDocker
@@ -9,11 +7,10 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class RunApiController {
+
     @CrossOrigin
     @PostMapping("/api/run")
-    fun run(@RequestBody request: String): ExecuteResult {
-        val objectMapper = jacksonObjectMapper()
-        val target = objectMapper.readValue<ExecuteTarget>(request)
+    fun run(@RequestBody target: ExecuteTarget): ExecuteResult {
         val sourceCode = target.files?.first()?.sourceCode
         val inputProgramLanguage = target.files?.first()?.programLanguage
 
