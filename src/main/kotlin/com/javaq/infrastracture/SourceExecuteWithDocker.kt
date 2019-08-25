@@ -38,17 +38,9 @@ class SourceExecuteWithDocker(override val programLanguage: ProgramLanguage,
     }
 
     private fun mkdir() {
-        listOf(
-                "rm", "-rf", "/tmp/workspace"
-        ).runCommand()
-
-        listOf(
-               "mkdir", "-p", "/tmp/workspace"
-        ).runCommand()
-
-        listOf(
-                "chmod", "777", "/tmp/workspace"
-        ).runCommand()
+        listOf("rm", "-rf", "/tmp/workspace").runCommand()
+        listOf("mkdir", "-p", "/tmp/workspace").runCommand()
+        listOf("chmod", "777", "/tmp/workspace").runCommand()
     }
 
     private fun writeSourceToFile() {
@@ -58,22 +50,14 @@ class SourceExecuteWithDocker(override val programLanguage: ProgramLanguage,
     }
 
     private fun copyFileToDocker() {
-        listOf(
-                "docker", "cp", "/tmp/workspace", "$containerId:/"
-        ).runCommand()
+        listOf("docker", "cp", "/tmp/workspace", "$containerId:/").runCommand()
     }
 
     private fun start(): ExecuteResult {
-        val result = listOf(
-                "docker", "start", "-i", containerId
-        ).runCommand()
-
-        return result
+        return listOf("docker", "start", "-i", containerId).runCommand()
     }
 
     private fun removeDocker() {
-        listOf(
-                "docker", "rm", containerId
-        ).runCommand()
+        listOf("docker", "rm", containerId).runCommand()
     }
 }
