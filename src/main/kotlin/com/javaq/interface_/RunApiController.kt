@@ -1,7 +1,6 @@
 package com.javaq.interface_
 
 import com.javaq.domain.model.*
-import com.javaq.domain.model.programLanguage.ProgramLanguageFactory
 import com.javaq.infrastracture.SourceExecuteWithDocker
 import org.springframework.web.bind.annotation.*
 
@@ -10,15 +9,12 @@ class RunApiController {
 
     @CrossOrigin
     @PostMapping("/api/run")
-    fun run(@RequestBody target: ExecuteTarget): ExecuteResult {
-        val sourceCode = target.files?.first()?.sourceCode
-        val inputProgramLanguage = target.files?.first()?.programLanguage
+    fun run(@RequestBody filesDto: FilesDto): ExecuteResult {
+        val files = filesDto.toDomain()
+        val programLanguage =  files.list.first().programLanguage
+        val source = files.list.first().source
 
-        sourceCode ?: return ExecuteResult("", "Illegal source code")
-        inputProgramLanguage ?: return  ExecuteResult("", "Illegal language")
-
-        val programLanguage = ProgramLanguageFactory.create(inputProgramLanguage)
-        val executor: SourceExecutor = SourceExecuteWithDocker(programLanguage, Source(sourceCode))
+        val executor: SourceExecutor = SourceExecuteWithDocker(programLanguage, Source(source))
         val result = executor.execute()
         return result
     }
