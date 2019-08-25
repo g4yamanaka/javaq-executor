@@ -5,7 +5,6 @@ import com.javaq.domain.model.programLanguage.ProgramLanguage
 import com.javaq.domain.model.Source
 import com.javaq.domain.model.SourceExecutor
 import java.io.File
-import java.io.IOException
 
 class SourceExecuteWithDocker(override val programLanguage: ProgramLanguage,
                               override val sourceCode: Source
@@ -33,8 +32,6 @@ class SourceExecuteWithDocker(override val programLanguage: ProgramLanguage,
                 "-w", "/workspace",
                 "--user", "nobody",
                 "ubuntu-dev",
-                "/usr/bin/time", "-q", "-f", "\"%e\"", "-o", "/time.txt",
-                "timeout", "3",
                 "/bin/bash", "-c", programLanguage.executeCommand
         ).runCommand()
         containerId = fullContainerId.substring(0, 12)
@@ -72,24 +69,6 @@ class SourceExecuteWithDocker(override val programLanguage: ProgramLanguage,
         ).runCommand()
 
         return result
-    }
-
-    private fun copyTimeFromDocker() {
-        listOf(
-                "docker", "cp", "$containerId:/time.txt", "/tmp/time.txt"
-        ).runCommand()
-    }
-
-    private fun getTime() {
-        try {
-            val timeFile = File("/tmp/time.txt").absoluteFile
-            return timeFile.useLines {
-                it.toList().joinToString { "\n" }
-            }
-
-        } catch (e: IOException) {
-            e.stackTrace
-        }
     }
 
     private fun removeDocker() {
