@@ -1,4 +1,4 @@
-package com.javaq.adaptor
+package com.javaq.interface_
 
 
 data class ExecuteTarget(
